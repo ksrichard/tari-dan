@@ -163,9 +163,14 @@ pub enum Commands {
     /// Deploying Tari template to a network
     Deploy {
         /// Tari DAN network
-        #[arg()]
+        #[clap(value_enum, default_value_t=Network::TestNet)]
         network: Network,
-        // TODO: add default to network
+
+        /// (Optional) Custom network name.
+        /// Custom network name set in project config
+        #[arg(short = 'c', long)]
+        custom_network: Option<String>,
+
         // TODO: add custom network optional argument
         // TODO: add custom tari.config.toml to a new project that could contain any custom tari dan network
     },
