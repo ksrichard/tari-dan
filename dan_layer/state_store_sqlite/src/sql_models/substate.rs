@@ -27,6 +27,7 @@ pub struct SubstateRecord {
     pub destroyed_by_block: Option<i64>,
     pub destroyed_at_epoch: Option<i64>,
     pub destroyed_by_shard: Option<i32>,
+    pub is_global: bool,
     pub created_at: PrimitiveDateTime,
     pub destroyed_at: Option<PrimitiveDateTime>,
 }

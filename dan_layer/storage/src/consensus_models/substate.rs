@@ -45,6 +45,7 @@ pub struct SubstateRecord {
     pub created_by_shard: Shard,
     pub created_at_epoch: Epoch,
     pub destroyed: Option<SubstateDestroyed>,
+    pub is_global: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -160,7 +161,7 @@ impl SubstateRecord {
     pub fn lock_all<
         'a,
         TTx: StateStoreWriteTransaction,
-        I: IntoIterator<Item = (&'a SubstateId, &'a Vec<SubstateLock>)>,
+        I: IntoIterator<Item=(&'a SubstateId, &'a Vec<SubstateLock>)>,
     >(
         tx: &mut TTx,
         block_id: &BlockId,
@@ -169,7 +170,7 @@ impl SubstateRecord {
         tx.substate_locks_insert_all(block_id, locks)
     }
 
-    pub fn unlock_all<'a, TTx: StateStoreWriteTransaction, I: Iterator<Item = &'a TransactionId>>(
+    pub fn unlock_all<'a, TTx: StateStoreWriteTransaction, I: Iterator<Item=&'a TransactionId>>(
         tx: &mut TTx,
         transaction_ids: Peekable<I>,
     ) -> Result<(), StorageError> {
@@ -185,7 +186,7 @@ impl SubstateRecord {
         Self::any_exist(tx, Some(id))
     }
 
-    pub fn any_exist<TTx: StateStoreReadTransaction, I: IntoIterator<Item = S>, S: Borrow<VersionedSubstateId>>(
+    pub fn any_exist<TTx: StateStoreReadTransaction, I: IntoIterator<Item=S>, S: Borrow<VersionedSubstateId>>(
         tx: &TTx,
         substates: I,
     ) -> Result<bool, StorageError> {
@@ -215,7 +216,7 @@ impl SubstateRecord {
         Ok(rec.is_up())
     }
 
-    pub fn get_any<TTx: StateStoreReadTransaction, I: IntoIterator<Item = SubstateRequirement>>(
+    pub fn get_any<TTx: StateStoreReadTransaction, I: IntoIterator<Item=SubstateRequirement>>(
         tx: &TTx,
         shards: I,
     ) -> Result<(Vec<SubstateRecord>, HashSet<SubstateRequirement>), StorageError> {
@@ -228,7 +229,7 @@ impl SubstateRecord {
         Ok((found, substate_ids))
     }
 
-    pub fn get_any_max_version<'a, TTx: StateStoreReadTransaction, I: IntoIterator<Item = &'a SubstateId>>(
+    pub fn get_any_max_version<'a, TTx: StateStoreReadTransaction, I: IntoIterator<Item=&'a SubstateId>>(
         tx: &TTx,
         substate_ids: I,
     ) -> Result<(Vec<SubstateRecord>, HashSet<&'a SubstateId>), StorageError> {

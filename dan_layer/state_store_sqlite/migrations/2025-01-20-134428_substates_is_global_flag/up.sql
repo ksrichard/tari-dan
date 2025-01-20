@@ -1,0 +1,1 @@
+ALTER TABLE substates ADD is_global boolean not NULL;

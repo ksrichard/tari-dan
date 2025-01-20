@@ -1,0 +1,1 @@
+ALTER TABLE substates DROP COLUMN is_global;

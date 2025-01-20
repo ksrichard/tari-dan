@@ -419,6 +419,7 @@ diesel::table! {
         destroyed_by_block -> Nullable<BigInt>,
         destroyed_at_epoch -> Nullable<BigInt>,
         destroyed_by_shard -> Nullable<Integer>,
+        is_global -> Bool,
         created_at -> Timestamp,
         destroyed_at -> Nullable<Timestamp>,
     }
